@@ -9,11 +9,12 @@ class App extends Component {
     super(props);
     this.state = {
       x:230,
-      y:100
+      y:50
     }
     this.changeHandlerX = this.changeHandlerX.bind(this);
     this.changeHandlerY = this.changeHandlerY.bind(this);
     this.validatePosition = this.validatePosition.bind(this);
+    this.getRandomInt = this.getRandomInt.bind(this);
   }
 
   changeHandlerX(event){
@@ -32,15 +33,29 @@ class App extends Component {
     console.log('mounted');
     console.log(this.state);
     console.log($('.doodle').position());
+    $('.tile-col').each(function(index){
+        if(index === 96){
+          $(this).toggleClass('tile-col-goal');
+          //console.log($(this).attr('class').includes('tile-col-goal'));
+        }
+        else{
+        var n = Math.floor(Math.random() * Math.floor(10));
+        if( n < 2){
+//          console.log(n);
+          $(this).toggleClass('tile-col-wall');
+        }
+      }
+    })
+  }
+
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
   }
 
   validatePosition(){
     console.log('--------------------------------------');
-  //  console.log(this.state);
     $('.doodle').css('left',this.state.x+"px");
     $('.doodle').css('bottom',this.state.y+"px");
-    //console.log($('.doodle').offset());
-    //console.log($('.doodle').offset());
     var player_left = $('.doodle').offset().left;
     var player_top = $('.doodle').offset().top;
     var player_right = player_left + $('.doodle').width();
@@ -53,43 +68,44 @@ class App extends Component {
             var wall_left = $(this).offset().left;
             var wall_right = wall_left + $(this).width();
 
-            if($(this).css(['background']).background.includes('rgb(255, 0, 0)')){
-              if(Math.abs(player_left-wall_right)<=5 && player_top>=wall_top &&
+            if($(this).attr('class').includes('tile-col-wall')){
+              if(Math.abs(player_left-wall_right)<=2 && player_top>=wall_top &&
                   player_bottom<=wall_bottom){
                     $(this).css({background:'black'});
                     alert('boom');
                     return false;
                   }
-              if(Math.abs(player_top-wall_bottom)<=5 && player_left>=wall_left &&
+              if(Math.abs(player_top-wall_bottom)<=2 && player_left>=wall_left &&
                   player_right<=wall_right){
                     $(this).css({background:'black'});
                     alert('boom');
                     return false;
                   }
-              if(Math.abs(player_right-wall_left)<=5 && player_top>=wall_top &&
+              if(Math.abs(player_right-wall_left)<=2 && player_top>=wall_top &&
                   player_bottom<=wall_bottom){
                     $(this).css({background:'black'});
                     alert('boom');
                     return false;
                   }
-              if(Math.abs(player_bottom-wall_top)<=5 && player_left>=wall_left &&
+              if(Math.abs(player_bottom-wall_top)<=2 && player_left>=wall_left &&
                   player_right<=wall_right){
                     $(this).css({background:'black'});
                     alert('boom');
                     return false;
                   }
-            }
-            if($(this).css(['background']).background.includes('rgb( 0,128, 0)')){
-              alert('green')
-              var wall_top = $(this).offset().top;
-              var wall_bottom = wall_top + $(this).height();
-              var wall_left = $(this).offset().left;
-              var wall_right = wall_left + $(this).width();
+            }else {
+              if($(this).attr('class').includes('tile-col-goal')){
+                //console.log('green');
+                var wall_top = $(this).offset().top;
+                var wall_bottom = wall_top + $(this).height();
+                var wall_left = $(this).offset().left;
+                var wall_right = wall_left + $(this).width();
 
-              if(wall_top<=player_top && wall_left<=player_left
-                  && wall_right>=player_right && wall_bottom>=player_bottom){
-                    alert('success');
-                  }
+                if(wall_top<=player_top && wall_left<=player_left
+                    && wall_right>=player_right && wall_bottom>=player_bottom){
+                      alert('success');
+                    }
+              }
             }
         })
   }
@@ -108,18 +124,21 @@ class App extends Component {
             <table className='table-map'>
               <tbody>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
@@ -127,87 +146,119 @@ class App extends Component {
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' ></td>
-                  <td className='tile-col' style={{background:'green'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col'style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
@@ -215,18 +266,132 @@ class App extends Component {
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
                 <tr className='tile-row'>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
                   <td className='tile-col'></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
-                  <td className='tile-col' style={{background:'red'}}></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                </tr>
+                <tr className='tile-row'>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                </tr>
+                <tr className='tile-row'>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                </tr>
+                <tr className='tile-row'>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                </tr>
+                <tr className='tile-row'>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                </tr>
+                <tr className='tile-row'>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                </tr>
+                <tr className='tile-row'>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                </tr>
+                <tr className='tile-row'>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
+                  <td className='tile-col'></td>
                 </tr>
               </tbody>
             </table>
