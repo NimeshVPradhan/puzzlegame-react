@@ -1,0 +1,121 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.Game-boundry {
+  height: 700px;
+  width: 500px;
+  border-width: thin;
+  border-style: solid;
+  position: absolute;
+  transform: translateX(150%);
+}
+
+.SlidebarX-container {
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+  align-content: center;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.SlidebarY-container {
+  position: absolute;
+  height: 100%;
+  width: 25px;
+  right: 0px;
+}
+
+.vslider {
+    -webkit-appearance: none;
+    width: 700px;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    position: absolute;
+    right: -340px;
+    top: 340px;;
+    transform: rotate(270deg);
+}
+
+
+.vslider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+
+.doodle {
+  width: 10px;
+  height: 10px;
+  border-style: solid;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 100px;
+  left: 230px;
+}
+
+.table-map {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.table-map > .tile-row, .tile-col {
+  width: 50px;
+  height: 50px;
+  left: 0px;
+  bottom: 0px;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
